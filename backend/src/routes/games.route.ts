@@ -15,7 +15,9 @@ router.post("/", upload.single("portada"), async (req, res) => {
 
     // const newGame = await createGame(title, platform, game_status, homepage_url);
 
-    res.status(201).json({ message: 'Game created', homepage_url: homepage_url })
+    res
+      .status(201)
+      .json({ message: "Game created", homepage_url: homepage_url });
   } catch (error) {
     res.status(500).json({ error: "Error creating the game" });
   }
