@@ -5,7 +5,7 @@ import { GameService } from "../services/games.service";
 export const GameController = {
   async create(req: Request, res: Response) {
     try {
-      const { title, platform, status_game } = req.body;
+      const { title, platform, status_game } = req.body ?? {};
 
       const homepage_url = req.file ? `/uploads/${req.file.filename}` : null;
 

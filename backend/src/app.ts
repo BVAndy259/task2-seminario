@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import pool from './config/database'; 
+import GameRouter from './routes/games.route';
 
 dotenv.config();
 
@@ -10,6 +11,9 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/uploads', express.static('uploads'))
+app.use('/api/games', GameRouter)
 
 app.get('/ping', async (req: Request, res: Response) => {
     try {
