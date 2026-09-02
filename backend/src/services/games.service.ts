@@ -7,7 +7,7 @@ export const GameService = {
     status_game: string;
     homepage_url: string | null;
   }) {
-    const query = `INSERT INTO games (title, platform, status_game, homepage_url) 
+    const query = `INSERT INTO games (title, platform, game_status, homepage_url) 
         VALUES ($1, $2, $3, $4) 
         RETURNING *;`;
 
