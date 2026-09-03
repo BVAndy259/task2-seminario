@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import "multer";
 import { RegisterServices } from "../services/register.service";
+import { error } from "console";
 
 export const RegisterController = {
   async create(req: Request, res: Response) {
@@ -31,16 +32,25 @@ export const RegisterController = {
   },
 
   async getByGame(req: Request, res: Response) {
-    try {
-      const { gameId } = req.params;
+    const { gameId } = req.params;
 
-      const register = await RegisterServices.getRegisterByGame(
-        Number(gameId),
-      );
+    if (isNaN(Number(gameId))) {
+      return res
+        .status(400)
+        .json({ error: "El ID del juego debe ser un número válido" });
+    }
+
+    try {
+      const register = await RegisterServices.getRegisterByGame(Number(gameId));
+
+      if (!register) {
+        return res.status(404).json({ error: "Juego no encontrado" });
+      }
+
       res.json(register);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error });
+      res.status(500).json({ error: "Error al obtener el historial de horas" });
     }
   },
 };

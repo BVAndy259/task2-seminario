@@ -23,12 +23,28 @@ export const RegisterServices = {
   },
 
   async getRegisterByGame(game_id: number) {
-    const query = `
-        SELECT * FROM time_log
-        WHERE game_id = $1 
-        ORDER BY registration_date DESC;
+    const gameQuery = `
+        SELECT g_id, title, platform, game_status, homepage_url
+        FROM games
+        WHERE g_id = $1;
     `;
-    const { rows } = await pool.query(query, [game_id]);
-    return rows;
+    const gameResult = await pool.query(gameQuery, [game_id]);
+
+    if (gameResult.rows.length === 0) {
+      return null;
+    }
+
+    const hoursQuery = `
+        SELECT game_id, hours_played, registration_date, notes 
+        FROM time_log 
+        WHERE game_id = $1 
+        ORDER BY registration_date DESC
+    `;
+    const hoursResult = await pool.query(hoursQuery, [game_id]);
+
+    return {
+      game: gameResult.rows[0],
+      historial: hoursResult.rows,
+    };
   },
 };
