@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import pool from "./config/database";
 import GameRouter from "./routes/games.route";
+import RegisterRouter from "./routes/register.route";
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ app.use(express.json());
 
 app.use("/uploads", express.static("uploads"));
 app.use("/api/games", GameRouter);
+
+app.use("/api/register", RegisterRouter);
 
 app.get("/ping", async (req: Request, res: Response) => {
   try {
