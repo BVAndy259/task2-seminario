@@ -32,10 +32,10 @@ export const RegisterController = {
 
   async getByGame(req: Request, res: Response) {
     try {
-      const { game_id } = req.params;
+      const { gameId } = req.params;
 
       const register = await RegisterServices.getRegisterByGame(
-        Number(game_id),
+        Number(gameId),
       );
       res.json(register);
     } catch (error) {
