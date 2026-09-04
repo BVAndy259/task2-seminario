@@ -45,15 +45,31 @@ const GameForm = ({ onAddedGame }: Props) => {
       <p className="form-hint">Añade una nueva aventura a tu biblioteca.</p>
       <div className="field">
         <label htmlFor="title">Título</label>
-        <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <input
+          id="title"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
       </div>
       <div className="field">
         <label htmlFor="platform">Plataforma</label>
-        <input id="platform" type="text" value={platform} onChange={(e) => setPlatform(e.target.value)} required />
+        <input
+          id="platform"
+          type="text"
+          value={platform}
+          onChange={(e) => setPlatform(e.target.value)}
+          required
+        />
       </div>
       <div className="field">
         <label htmlFor="status">Estado</label>
-        <select id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+        <select
+          id="status"
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+        >
           <option value="Jugando">Jugando</option>
           <option value="Completado">Completado</option>
           <option value="Abandonado">Abandonado</option>
@@ -61,7 +77,13 @@ const GameForm = ({ onAddedGame }: Props) => {
       </div>
       <div className="field">
         <label htmlFor="homepage">Imagen de portada</label>
-        <input id="homepage" className="file-input" type="file" accept="image/*" onChange={handleFileChange} />
+        <input
+          id="homepage"
+          className="file-input"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
       </div>
       <button className="primary-button" type="submit" disabled={loading}>
         {loading ? "Guardando..." : "Guardar juego"}

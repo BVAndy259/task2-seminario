@@ -38,8 +38,17 @@ const GamesList = () => {
       <section className="intro">
         <div>
           <p className="eyebrow">Tu biblioteca personal</p>
-          <h1>Juega.<br />Registra.<br />Recuerda.</h1>
-          <p className="intro-text">Un espacio sencillo para guardar tus juegos y llevar la cuenta de cada hora invertida en ellos.</p>
+          <h1>
+            Juega.
+            <br />
+            Registra.
+            <br />
+            Recuerda.
+          </h1>
+          <p className="intro-text">
+            Un espacio sencillo para guardar tus juegos y llevar la cuenta de
+            cada hora invertida en ellos.
+          </p>
         </div>
         <GameForm onAddedGame={loadGames} />
       </section>
@@ -47,19 +56,40 @@ const GamesList = () => {
       <section>
         <div className="library-heading">
           <h2>Tu colección</h2>
-          <span className="library-count">{games.length} {games.length === 1 ? "juego" : "juegos"}</span>
+          <span className="library-count">
+            {games.length} {games.length === 1 ? "juego" : "juegos"}
+          </span>
         </div>
         <div className="game-grid">
-          {games.length === 0 && <p className="empty-state">Todavía no hay juegos. Añade el primero a tu colección.</p>}
+          {games.length === 0 && (
+            <p className="empty-state">
+              Todavía no hay juegos. Añade el primero a tu colección.
+            </p>
+          )}
           {games.map((game) => (
             <article className="game-card" key={game.g_id}>
               <div className="cover-frame">
-                {game.homepage_url ? <img src={`${API_URL}${game.homepage_url}`} alt={`Portada de ${game.title}`} /> : <span className="cover-placeholder">Sin portada todavía</span>}
+                {game.homepage_url ? (
+                  <img
+                    src={`${API_URL}${game.homepage_url}`}
+                    alt={`Portada de ${game.title}`}
+                  />
+                ) : (
+                  <span className="cover-placeholder">Sin portada todavía</span>
+                )}
               </div>
               <div className="game-card-body">
                 <h3>{game.title}</h3>
-                <div className="game-meta"><span>{game.platform}</span><span className="status">{game.game_status}</span></div>
-                <button className="card-link" onClick={() => navigate(`/game/${game.g_id}`)}>Ver sesiones <span aria-hidden="true">→</span></button>
+                <div className="game-meta">
+                  <span>{game.platform}</span>
+                  <span className="status">{game.game_status}</span>
+                </div>
+                <button
+                  className="card-link"
+                  onClick={() => navigate(`/game/${game.g_id}`)}
+                >
+                  Ver sesiones <span aria-hidden="true">→</span>
+                </button>
               </div>
             </article>
           ))}

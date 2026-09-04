@@ -49,7 +49,9 @@ const GameDetail = () => {
     }
   };
 
-  useEffect(() => { loadDetails(); }, [id]);
+  useEffect(() => {
+    loadDetails();
+  }, [id]);
 
   const openEdit = () => {
     if (!game) return;
@@ -113,18 +115,33 @@ const GameDetail = () => {
 
   return (
     <main className="detail-page">
-      <button className="back-link" onClick={() => navigate("/")}>← Volver a la biblioteca</button>
+      <button className="back-link" onClick={() => navigate("/")}>
+        ← Volver a la biblioteca
+      </button>
       <section className="detail-hero">
         <div className="cover-frame">
-          {game.homepage_url ? <img src={`${API_URL}${game.homepage_url}`} alt={`Portada de ${game.title}`} /> : <span className="cover-placeholder">Sin portada todavía</span>}
+          {game.homepage_url ? (
+            <img
+              src={`${API_URL}${game.homepage_url}`}
+              alt={`Portada de ${game.title}`}
+            />
+          ) : (
+            <span className="cover-placeholder">Sin portada todavía</span>
+          )}
         </div>
         <div className="detail-copy">
           <p className="eyebrow">Ficha del juego</p>
           <h1>{game.title}</h1>
-          <p className="detail-platform">Jugando en <strong>{game.platform}</strong> · {game.game_status}</p>
+          <p className="detail-platform">
+            Jugando en <strong>{game.platform}</strong> · {game.game_status}
+          </p>
           <div className="detail-actions">
-            <button className="session-open-button" onClick={openEdit}>Editar juego</button>
-            <button className="danger-button" onClick={handleDelete}>Eliminar</button>
+            <button className="session-open-button" onClick={openEdit}>
+              Editar juego
+            </button>
+            <button className="danger-button" onClick={handleDelete}>
+              Eliminar
+            </button>
           </div>
         </div>
       </section>
@@ -132,16 +149,31 @@ const GameDetail = () => {
         <div className="history-panel">
           <div className="history-heading">
             <h2>Historial de sesiones</h2>
-            <button className="session-open-button" onClick={() => setIsRegisterOpen(true)}>+ Registrar sesión</button>
+            <button
+              className="session-open-button"
+              onClick={() => setIsRegisterOpen(true)}
+            >
+              + Registrar sesión
+            </button>
           </div>
-          {historial.length === 0 ? <p className="empty-state">Aún no hay horas registradas para este juego.</p> : (
+          {historial.length === 0 ? (
+            <p className="empty-state">
+              Aún no hay horas registradas para este juego.
+            </p>
+          ) : (
             <ul className="history-list">
               {historial.map((register) => (
                 <li className="history-item" key={register.tl_id}>
-                  <span className="history-date">{new Date(register.registration_date).toLocaleDateString()}</span>
+                  <span className="history-date">
+                    {new Date(register.registration_date).toLocaleDateString()}
+                  </span>
                   <div className="history-entry">
-                    <span className="history-hours">{register.hours_played} horas</span>
-                    {register.notes && <p className="history-note">{register.notes}</p>}
+                    <span className="history-hours">
+                      {register.hours_played} horas
+                    </span>
+                    {register.notes && (
+                      <p className="history-note">{register.notes}</p>
+                    )}
                   </div>
                 </li>
               ))}
@@ -150,15 +182,48 @@ const GameDetail = () => {
         </div>
       </section>
       {isRegisterOpen && (
-        <div className="modal-backdrop" onClick={() => setIsRegisterOpen(false)}>
-          <div className="session-modal" role="dialog" aria-modal="true" aria-labelledby="session-modal-title" onClick={(event) => event.stopPropagation()}>
-            <button className="modal-close" aria-label="Cerrar" onClick={() => setIsRegisterOpen(false)}>×</button>
+        <div
+          className="modal-backdrop"
+          onClick={() => setIsRegisterOpen(false)}
+        >
+          <div
+            className="session-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="session-modal-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              className="modal-close"
+              aria-label="Cerrar"
+              onClick={() => setIsRegisterOpen(false)}
+            >
+              ×
+            </button>
             <p className="eyebrow">Nueva actividad</p>
             <h2 id="session-modal-title">Registrar sesión</h2>
             <form onSubmit={handleSubmit} className="session-form">
-              <input type="number" step="0.1" placeholder="Horas jugadas" value={hours} onChange={(e) => setHours(e.target.value)} required autoFocus />
-              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-              <input type="text" placeholder="Notas (opcional)" value={notes} onChange={(e) => setNotes(e.target.value)} />
+              <input
+                type="number"
+                step="0.1"
+                placeholder="Horas jugadas"
+                value={hours}
+                onChange={(e) => setHours(e.target.value)}
+                required
+                autoFocus
+              />
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
+              <input
+                type="text"
+                placeholder="Notas (opcional)"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+              />
               <button type="submit">Guardar sesión</button>
             </form>
           </div>
@@ -166,19 +231,51 @@ const GameDetail = () => {
       )}
       {isEditOpen && (
         <div className="modal-backdrop" onClick={() => setIsEditOpen(false)}>
-          <div className="session-modal" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title" onClick={(event) => event.stopPropagation()}>
-            <button className="modal-close" aria-label="Cerrar" onClick={() => setIsEditOpen(false)}>×</button>
+          <div
+            className="session-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="edit-modal-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              className="modal-close"
+              aria-label="Cerrar"
+              onClick={() => setIsEditOpen(false)}
+            >
+              ×
+            </button>
             <p className="eyebrow">Editar biblioteca</p>
             <h2 id="edit-modal-title">Editar juego</h2>
             <form onSubmit={handleEdit} className="session-form">
-              <input type="text" placeholder="Título" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} required autoFocus />
-              <input type="text" placeholder="Plataforma" value={editPlatform} onChange={(e) => setEditPlatform(e.target.value)} required />
-              <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)}>
+              <input
+                type="text"
+                placeholder="Título"
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                required
+                autoFocus
+              />
+              <input
+                type="text"
+                placeholder="Plataforma"
+                value={editPlatform}
+                onChange={(e) => setEditPlatform(e.target.value)}
+                required
+              />
+              <select
+                value={editStatus}
+                onChange={(e) => setEditStatus(e.target.value)}
+              >
                 <option value="Jugando">Jugando</option>
                 <option value="Completado">Completado</option>
                 <option value="Abandonado">Abandonado</option>
               </select>
-              <input type="file" accept="image/*" onChange={(e) => setEditCover(e.target.files?.[0] ?? null)} />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setEditCover(e.target.files?.[0] ?? null)}
+              />
               <button type="submit">Guardar cambios</button>
             </form>
           </div>
