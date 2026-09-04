@@ -8,6 +8,10 @@ const pool = new Pool({
   user: process.env.DB_USER || "postgres",
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT) || 5432,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 pool
