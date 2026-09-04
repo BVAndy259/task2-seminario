@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api, { API_URL } from "../services/api";
+import GameForm from "./gameForm";
 
 interface Game {
   id: number;
@@ -33,6 +34,8 @@ const GamesList = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>Mi Bitácora de Juegos</h2>
+
+      <GameForm onAddedGame={loadGames} />
 
       <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
         {games.map((game) => (
