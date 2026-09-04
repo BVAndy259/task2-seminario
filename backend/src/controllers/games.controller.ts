@@ -2,12 +2,35 @@ import { Request, Response } from "express";
 import "multer";
 import { GameService } from "../services/games.service";
 
+// S3
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { bucketName, s3Client } from "../config/s3";
+
 export const GameController = {
   async create(req: Request, res: Response) {
     try {
       const { title, platform, status_game } = req.body ?? {};
 
-      const homepage_url = req.file ? `/uploads/${req.file.filename}` : null;
+      // const homepage_url = req.file ? `/uploads/${req.file.filename}` : null;
+
+      // ==========================================
+      // VERSIÓN AWS S3
+      // ==========================================
+      let homepage_url = null;
+      if (req.file) {
+        const keyName = `homepages/${Date.now()}-${req.file.originalname}`;
+
+        const command = new PutObjectCommand({
+          Bucket: bucketName,
+          Key: keyName,
+          Body: req.file.buffer,
+          ContentType: req.file.mimetype,
+        });
+
+        await s3Client.send(command);
+        // Armamos la URL pública de S3
+        homepage_url = `https://${bucketName}.s3.amazonaws.com/${keyName}`;
+      }
 
       const newGame = await GameService.createGame({
         title,
@@ -42,7 +65,19 @@ export const GameController = {
       return res.status(400).json({ error: "ID inválido" });
 
     try {
-      const homepage_url = req.file ? `/uploads/${req.file.filename}` : null;
+      let homepage_url = null;
+      if (req.file) {
+        const keyName = `homepages/${Date.now()}-${req.file.originalname}`;
+        await s3Client.send(
+          new PutObjectCommand({
+            Bucket: bucketName,
+            Key: keyName,
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype,
+          }),
+        );
+        homepage_url = `https://${bucketName}.s3.amazonaws.com/${keyName}`;
+      }
 
       const updatedGame = await GameService.updateGame({
         g_id: Number(id),

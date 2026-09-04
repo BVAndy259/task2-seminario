@@ -18,6 +18,9 @@ interface TimeLog {
   notes: string;
 }
 
+const imageUrl = (url: string) =>
+  url.startsWith("http") ? url : `${API_URL}${url}`;
+
 const GameDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -122,7 +125,7 @@ const GameDetail = () => {
         <div className="cover-frame">
           {game.homepage_url ? (
             <img
-              src={`${API_URL}${game.homepage_url}`}
+              src={imageUrl(game.homepage_url)}
               alt={`Portada de ${game.title}`}
             />
           ) : (

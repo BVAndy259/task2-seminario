@@ -11,6 +11,9 @@ interface Game {
   homepage_url: string;
 }
 
+const imageUrl = (url: string) =>
+  url.startsWith("http") ? url : `${API_URL}${url}`;
+
 const GamesList = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
@@ -71,7 +74,7 @@ const GamesList = () => {
               <div className="cover-frame">
                 {game.homepage_url ? (
                   <img
-                    src={`${API_URL}${game.homepage_url}`}
+                    src={imageUrl(game.homepage_url)}
                     alt={`Portada de ${game.title}`}
                   />
                 ) : (

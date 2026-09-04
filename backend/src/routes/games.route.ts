@@ -16,7 +16,11 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
+
+// VERSIÓN AWS S3
+const storageS3 = multer.memoryStorage();
+const upload = multer({ storage: storageS3 });
 
 router.post("/", upload.single("portada"), GameController.create);
 router.get("/", GameController.getAll);

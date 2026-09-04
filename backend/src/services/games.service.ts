@@ -1,6 +1,8 @@
 import { unlink } from "node:fs/promises";
 import path from "node:path";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import pool from "../config/database";
+import { bucketName, s3Client } from "../config/s3";
 
 export const GameService = {
   async createGame(data: {
@@ -72,14 +74,31 @@ export const GameService = {
     const deletedGame = rows[0];
 
     if (deletedGame?.homepage_url) {
-      const filename = path.basename(deletedGame.homepage_url);
-      const imagePath = path.join(process.cwd(), "uploads", filename);
+      if (deletedGame.homepage_url.startsWith("http")) {
+        const imageKey = decodeURIComponent(
+          new URL(deletedGame.homepage_url).pathname.slice(1),
+        );
 
-      try {
-        await unlink(imagePath);
-      } catch (error) {
-        if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-          console.error("Error al eliminar la imagen del juego", error);
+        try {
+          await s3Client.send(
+            new DeleteObjectCommand({
+              Bucket: bucketName,
+              Key: imageKey,
+            }),
+          );
+        } catch (error) {
+          console.error("Error al eliminar la imagen de S3", error);
+        }
+      } else {
+        const filename = path.basename(deletedGame.homepage_url);
+        const imagePath = path.join(process.cwd(), "uploads", filename);
+
+        try {
+          await unlink(imagePath);
+        } catch (error) {
+          if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+            console.error("Error al eliminar la imagen local", error);
+          }
         }
       }
     }
