@@ -1,18 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api, { API_URL } from "../services/api";
 import GameForm from "./gameForm";
 
 interface Game {
-  id: number;
+  g_id: number;
   title: string;
   platform: string;
-  status_game: string;
+  game_status: string;
   homepage_url: string;
 }
 
 const GamesList = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   const loadGames = async () => {
     try {
@@ -40,7 +42,7 @@ const GamesList = () => {
       <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
         {games.map((game) => (
           <div
-            key={game.id}
+            key={game.g_id}
             style={{
               border: "1px solid #ccc",
               padding: "15px",
@@ -65,10 +67,11 @@ const GamesList = () => {
               <strong>Plataforma:</strong> {game.platform}
             </p>
             <p>
-              <strong>Estado:</strong> {game.status_game}
+              <strong>Estado:</strong> {game.game_status}
             </p>
 
             <button
+              onClick={() => navigate(`/game/${game.g_id}`)}
               style={{ width: "100%", padding: "8px", cursor: "pointer" }}
             >
               Ver historial de horas

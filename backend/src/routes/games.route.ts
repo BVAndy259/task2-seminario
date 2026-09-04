@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post("/", upload.single("homepage"), GameController.create);
+router.post("/", upload.single("portada"), GameController.create);
 router.get("/", GameController.getAll);
 router.put("/:id", GameController.update);
 router.delete("/:id", GameController.delete);

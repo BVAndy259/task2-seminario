@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import api from "../services/api";
 
 interface Props {
@@ -24,17 +24,15 @@ const GameForm = ({ onAddedGame }: Props) => {
 
     try {
       const formData = new FormData();
-      formData.append("titulo", title);
-      formData.append("plataforma", platform);
-      formData.append("estado_juego", status);
+      formData.append("title", title);
+      formData.append("platform", platform);
+      formData.append("status_game", status);
 
       if (homepage) {
         formData.append("portada", homepage);
       }
 
-      await api.post("/games", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await api.post("/games", formData);
 
       setTitle("");
       setPlatform("");
