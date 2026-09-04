@@ -1,3 +1,5 @@
+import { unlink } from "node:fs/promises";
+import path from "node:path";
 import pool from "../config/database";
 
 export const GameService = {
@@ -67,6 +69,21 @@ export const GameService = {
   async deleteGame(g_id: number) {
     const query = `DELETE FROM games WHERE g_id = $1 RETURNING *;`;
     const { rows } = await pool.query(query, [g_id]);
-    return rows[0];
+    const deletedGame = rows[0];
+
+    if (deletedGame?.homepage_url) {
+      const filename = path.basename(deletedGame.homepage_url);
+      const imagePath = path.join(process.cwd(), "uploads", filename);
+
+      try {
+        await unlink(imagePath);
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+          console.error("Error al eliminar la imagen del juego", error);
+        }
+      }
+    }
+
+    return deletedGame;
   },
 };
