@@ -1,3 +1,4 @@
+import { time } from "console";
 import pool from "../config/database";
 
 export const GameService = {
@@ -24,5 +25,49 @@ export const GameService = {
   async getGames() {
     const { rows } = await pool.query("SELECT * FROM games ORDER BY g_id DESC");
     return rows;
+  },
+
+  async updateGame(data: {
+    g_id: number;
+    title: string;
+    platform: string;
+    status_game: string;
+    homepage_url: string | null;
+  }) {
+    let query = "";
+    let values = [];
+
+    if (data.homepage_url) {
+      query = `
+        UPDATE games 
+        SET title = $1, platform = $2, status_game = $3, homepage_url = $4 
+        WHERE g_id = $5 
+        RETURNING *;
+      `;
+      values = [
+        data.title,
+        data.platform,
+        data.status_game,
+        data.homepage_url,
+        data.g_id,
+      ];
+    } else {
+      query = `
+        UPDATE games 
+        SET title = $1, platform = $2, status_game = $3 
+        WHERE g_id = $4 
+        RETURNING *;
+      `;
+      values = [data.title, data.platform, data.status_game, data.g_id];
+    }
+
+    const { rows } = await pool.query(query, values);
+    return rows[0];
+  },
+
+  async deleteGame(g_id: number) {
+    const query = `DELETE FROM games WHERE g_id = $1 RETURNING *;`;
+    const { rows } = await pool.query(query, [g_id]);
+    return rows[0];
   },
 };
