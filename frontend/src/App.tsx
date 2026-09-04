@@ -6,10 +6,16 @@ import GameDetails from "./components/gameDetail";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<GamesList />} />
-        <Route path="/game/:id" element={<GameDetails />} />
-      </Routes>
+      <div className="app-shell">
+        <header className="topbar">
+          <span className="brand"><span className="brand-mark">/</span>mi bitácora</span>
+          <span className="topbar-note">juegos · sesiones · recuerdos</span>
+        </header>
+        <Routes>
+          <Route path="/" element={<GamesList />} />
+          <Route path="/game/:id" element={<GameDetails />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

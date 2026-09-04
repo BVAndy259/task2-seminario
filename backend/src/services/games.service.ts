@@ -39,7 +39,7 @@ export const GameService = {
     if (data.homepage_url) {
       query = `
         UPDATE games 
-        SET title = $1, platform = $2, status_game = $3, homepage_url = $4 
+        SET title = $1, platform = $2, game_status = $3, homepage_url = $4 
         WHERE g_id = $5 
         RETURNING *;
       `;
@@ -53,7 +53,7 @@ export const GameService = {
     } else {
       query = `
         UPDATE games 
-        SET title = $1, platform = $2, status_game = $3 
+        SET title = $1, platform = $2, game_status = $3 
         WHERE g_id = $4 
         RETURNING *;
       `;

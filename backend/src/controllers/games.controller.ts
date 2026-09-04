@@ -36,7 +36,7 @@ export const GameController = {
 
   async update(req: Request, res: Response) {
     const { id } = req.params;
-    const { title, platform, status_game } = req.body;
+    const { title, platform, status_game } = req.body ?? {};
 
     if (isNaN(Number(id)))
       return res.status(400).json({ error: "ID inválido" });

@@ -20,7 +20,7 @@ const upload = multer({ storage });
 
 router.post("/", upload.single("portada"), GameController.create);
 router.get("/", GameController.getAll);
-router.put("/:id", GameController.update);
+router.put("/:id", upload.single("portada"), GameController.update);
 router.delete("/:id", GameController.delete);
 
 export default router;
